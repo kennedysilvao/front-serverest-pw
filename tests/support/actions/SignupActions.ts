@@ -28,8 +28,12 @@ export class SignupActions {
         return this.page.getByRole('button', { name: 'Cadastrar' })
     }
 
-    get messageSuccess() {
-        return this.page.getByText('Cadastro realizado com sucesso')
+    // get messageSuccess() {
+    //     return this.page.getByText('Cadastro realizado com sucesso')
+    // }
+
+    message(text: string) {
+        return this.page.getByText(text) 
     }
 
     async titleSignupIsVisible() {
@@ -50,10 +54,12 @@ export class SignupActions {
         await this.buttonSignup.click()
     }
 
-    async messageSuccessIsVisible() {
-        await expect(this.messageSuccess).toBeVisible()
+    // async messageSuccessIsVisible() {
+    //     await expect(this.messageSuccess).toBeVisible()
+    // }
+
+    async validateMessage(message: string) {
+        await expect(this.message(message)).toBeVisible()
     }
-
-
     // await expect(page.getByText('Cadastro realizado com sucesso')).toBeVisible()
 }
