@@ -15,10 +15,33 @@ export async function createUser(request: APIRequestContext, user: User) {
             administrador: 'true'
         },
     });
+    expect(response.ok()).toBeTruthy();
 
+    return await response.json();
+}
+
+export async function getUserByEmail(request: APIRequestContext, email: string) {
+    const response = await request.get('https://serverest.dev/usuarios', {
+        params: {
+            email: email,
+        },
+    });
+    expect(response.ok()).toBeTruthy();
     const body = await response.json();
-    console.log('STATUS:', response.status());
-    console.log('BODY:', body);
+
+    if (body.usuarios.length === 0) {
+        console.log('Usuário não encontrado, nada para deletar');
+        return;
+    }
+    const userId = body.usuarios[0]._id;
+
+    return userId;
+}
+
+export async function deleteUserByID(request: APIRequestContext, email: string) {
+    const userId = await getUserByEmail(request, email)
+
+    const response = await request.delete(`https://serverest.dev/usuarios/${userId}`);
     expect(response.ok()).toBeTruthy();
 
     return await response.json();

@@ -1,9 +1,8 @@
 import { test, expect } from '@playwright/test';
-import { faker } from '@faker-js/faker';
 import { HomeActions } from '../support/actions/HomeActions';
 import { LoginActions } from '../support/actions/LoginActions';
 import { SignupActions } from '../support/actions/SignupActions';
-import { createUser } from '../support/apiHelper/apiHelper';
+import { createUser, deleteUserByID } from '../support/apiHelper/apiHelper';
 
 let loginActions: LoginActions
 let signupActions: SignupActions
@@ -15,12 +14,15 @@ test.beforeEach('', async ({ page }) => {
     homeActions = new HomeActions(page)
 })
 
-test('Should be registered with success', async ({ page }) => {
+test('Should be registered with success', async ({ page, request }) => {
     const user = {
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
+        name: 'Kennedy Oliveira',
+        email: 'kennedy1@gmail.com',
         password: 'pwd123'
     }
+
+    await deleteUserByID(request, user.email)
+
     await loginActions.visit()
     await loginActions.loginFormIsVisible()
     await loginActions.goToSignupForm()
@@ -32,12 +34,14 @@ test('Should be registered with success', async ({ page }) => {
     await homeActions.userIsLogged('Serverest Store')
 })
 
-test('Should be registered like admin with success', async ({ page }) => {
+test('Should be registered like admin with success', async ({ page, request }) => {
     const user = {
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
+        name: 'Kennedy Oliveira',
+        email: 'kennedy2@gmail.com',
         password: 'pwd123'
     }
+
+    await deleteUserByID(request, user.email)
     await loginActions.visit()
     await loginActions.loginFormIsVisible()
     await loginActions.goToSignupForm()
@@ -70,7 +74,7 @@ test('Required fields', async ({ page }) => {
 
 test('Should not be accept invalid email', async ({ page }) => {
     const user = {
-        name: faker.person.fullName(),
+        name: 'Kennedy Oliveira',
         email: 'teste@edas',
         password: 'pwd123'
     }
@@ -87,11 +91,11 @@ test('Should not be accept invalid email', async ({ page }) => {
 
 test('Should not be registered with email duplicated', async ({ page, request }) => {
     const user = {
-        name: faker.person.fullName(),
-        email: faker.internet.email(),
+        name: 'Kennedy Oliveira',
+        email: 'kennedy3@gmail.com',
         password: 'pwd123'
     }
-
+    await deleteUserByID(request, user.email)
     await createUser(request, user)
 
     await loginActions.visit()
