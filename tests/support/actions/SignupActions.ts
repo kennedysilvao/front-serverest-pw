@@ -54,12 +54,7 @@ export class SignupActions {
         await this.buttonSignup.click()
     }
 
-    // async messageSuccessIsVisible() {
-    //     await expect(this.messageSuccess).toBeVisible()
-    // }
-
     async validateMessage(message: string) {
         await expect(this.message(message)).toBeVisible()
     }
-    // await expect(page.getByText('Cadastro realizado com sucesso')).toBeVisible()
 }
