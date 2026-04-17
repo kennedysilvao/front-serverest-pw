@@ -28,10 +28,6 @@ export class SignupActions {
         return this.page.getByRole('button', { name: 'Cadastrar' })
     }
 
-    // get messageSuccess() {
-    //     return this.page.getByText('Cadastro realizado com sucesso')
-    // }
-
     message(text: string) {
         return this.page.getByText(text) 
     }
